@@ -21,6 +21,8 @@
   const PADDLE_HEIGHT = 100;
   var playerScore = 0;
   var computerScore = 0;
+  const WINNIG_SCORE = 11;
+
 
   window.onload = function() {
     canvas = document.getElementById('gameCamvas');
@@ -47,17 +49,23 @@
     // right side
     if (ballX > canvas.width - ballRadius*2) {
       if (ballY > paddle2Y + PADDLE_HEIGHT || ballY < paddle2Y) {
-        ballReset();
         playerScore++;
-      }
-      else
-        ballSpeedX = -ballSpeedX;    }else if (ballX < 0 + ballRadius*2) { //left side
-      if (ballY > paddle1Y + PADDLE_HEIGHT || ballY < paddle1Y) {
         ballReset();
-        computerScore++;
-      }
-      else
+      }else{
         ballSpeedX = -ballSpeedX;
+        var deltaY = ballY - (paddle2Y+PADDLE_HEIGHT/2);
+        ballSpeedY = deltaY * 0.35;
+      }
+    }else if (ballX < 0 + ballRadius*2) { //left side
+      if (ballY > paddle1Y + PADDLE_HEIGHT || ballY < paddle1Y) {
+        computerScore++;
+        ballReset();
+      }
+      else{
+        ballSpeedX = -ballSpeedX;
+        var deltaY = ballY - (paddle1Y+PADDLE_HEIGHT/2);
+        ballSpeedY = deltaY * 0.35;
+      }
     }
     ballY = ballY + ballSpeedY;
     if (ballY > canvas.height - ballRadius*2) {
@@ -118,9 +126,13 @@
   }
 
   function ballReset() {
+      if(playerScore >= WINNIG_SCORE || computerScore >= WINNIG_SCORE){
+        playerScore = 0;
+        computerScore = 0;
+      }
       ballX = canvas.width/2;
       ballY = canvas.height/2;
       ballSpeedX = -ballSpeedX;
-    }
+  }
 </script>
 </html>
