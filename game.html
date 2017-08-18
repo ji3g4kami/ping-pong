@@ -15,6 +15,9 @@
   var ballSpeedX = 15;
   var ballSpeedY = 5;
   var ballRadius = 10;
+  var paddle1Y = 250;
+  const PADDLE_HEIGHT = 100;
+
   window.onload = function() {
     canvas = document.getElementById('gameCamvas');
     canvasContext = canvas.getContext('2d');
@@ -25,6 +28,10 @@
       drawEverything();
     }, 1000/framesPerSecond);
 
+    canvas.addEventListener('mousemove', function(evt) {
+      var mousePos = calculateMousePos(evt);
+      paddle1Y = mousePos.y;
+    });
   }
 
 
@@ -45,11 +52,11 @@
   }
 
   function drawEverything() {
-    //draw the background
+    //draw the  background
     colorRect(0,0,canvas.width,canvas.height,'black')
 
     // draw the left paddle
-    colorRect(1,250,10,100,'white')
+    colorRect(1,paddle1Y,10,100,'white')
 
     // draw the ball
     colorBall(ballX, ballY, ballRadius,'yellow')
@@ -66,6 +73,17 @@
     canvasContext.beginPath();
     canvasContext.arc(centerX,centerY,radius,0, 2 * Math.PI);
     canvasContext.fill();
+  }
+
+  function calculateMousePos(evt) {
+    var rect = canvas.getBoundingClientRect();
+    var root = document.documentElement;
+    var mouseX = evt.clientX - rect.left - root.scrollLeft;
+    var mouseY = evt.clientY - rect.left - root.scrollTop;
+    return {
+      x:mouseX,
+      y:mouseY - PADDLE_HEIGHT/2
+    };
   }
 </script>
 </html>
