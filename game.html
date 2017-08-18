@@ -16,6 +16,8 @@
   var ballSpeedY = 5;
   var ballRadius = 10;
   var paddle1Y = 250;
+  var paddle2Y = 250;
+  const PADDLE_THICKNESS = 10;
   const PADDLE_HEIGHT = 100;
 
   window.onload = function() {
@@ -28,6 +30,7 @@
       drawEverything();
     }, 1000/framesPerSecond);
 
+
     canvas.addEventListener('mousemove', function(evt) {
       var mousePos = calculateMousePos(evt);
       paddle1Y = mousePos.y;
@@ -38,15 +41,20 @@
 
   function moveEverything() {
     ballX = ballX + ballSpeedX;
+    paddle2Y = ballY*0.7;
+    // right side
     if (ballX > canvas.width - ballRadius*2) {
-      ballSpeedX = -ballSpeedX;
-    }else if (ballX < ballRadius*2) {
-      ballSpeedX = -ballSpeedX;
+      if (ballY > paddle2Y + PADDLE_HEIGHT || ballY < paddle2Y) {ballReset();}
+      else
+        ballSpeedX = -ballSpeedX;    }else if (ballX < 0 + ballRadius*2) { //left side
+      if (ballY > paddle1Y + PADDLE_HEIGHT || ballY < paddle1Y) {ballReset();}
+      else
+        ballSpeedX = -ballSpeedX;
     }
     ballY = ballY + ballSpeedY;
     if (ballY > canvas.height - ballRadius*2) {
       ballSpeedY = -ballSpeedY;
-    }else if (ballY < ballRadius*2) {
+    }else if (ballY < 0 + ballRadius*2) {
       ballSpeedY = -ballSpeedY;
     }
   }
@@ -56,7 +64,10 @@
     colorRect(0,0,canvas.width,canvas.height,'black')
 
     // draw the left paddle
-    colorRect(1,paddle1Y,10,100,'white')
+    colorRect(1,paddle1Y,PADDLE_THICKNESS,PADDLE_HEIGHT,'white')
+
+    // draw the computer's paddle
+    colorRect(canvas.width - (PADDLE_THICKNESS + 1) ,paddle2Y,PADDLE_THICKNESS,PADDLE_HEIGHT,'white')
 
     // draw the ball
     colorBall(ballX, ballY, ballRadius,'yellow')
@@ -85,5 +96,11 @@
       y:mouseY - PADDLE_HEIGHT/2
     };
   }
+
+  function ballReset() {
+      ballX = canvas.width/2;
+      ballY = canvas.height/2;
+      ballSpeedX = -ballSpeedX;
+    }
 </script>
 </html>
