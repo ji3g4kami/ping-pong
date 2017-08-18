@@ -19,6 +19,8 @@
   var paddle2Y = 250;
   const PADDLE_THICKNESS = 10;
   const PADDLE_HEIGHT = 100;
+  var playerScore = 0;
+  var computerScore = 0;
 
   window.onload = function() {
     canvas = document.getElementById('gameCamvas');
@@ -44,10 +46,16 @@
     paddle2Y = ballY*0.7;
     // right side
     if (ballX > canvas.width - ballRadius*2) {
-      if (ballY > paddle2Y + PADDLE_HEIGHT || ballY < paddle2Y) {ballReset();}
+      if (ballY > paddle2Y + PADDLE_HEIGHT || ballY < paddle2Y) {
+        ballReset();
+        playerScore++;
+      }
       else
         ballSpeedX = -ballSpeedX;    }else if (ballX < 0 + ballRadius*2) { //left side
-      if (ballY > paddle1Y + PADDLE_HEIGHT || ballY < paddle1Y) {ballReset();}
+      if (ballY > paddle1Y + PADDLE_HEIGHT || ballY < paddle1Y) {
+        ballReset();
+        computerScore++;
+      }
       else
         ballSpeedX = -ballSpeedX;
     }
@@ -61,16 +69,21 @@
 
   function drawEverything() {
     //draw the  background
-    colorRect(0,0,canvas.width,canvas.height,'black')
+    colorRect(0,0,canvas.width,canvas.height,'black');
 
     // draw the left paddle
-    colorRect(1,paddle1Y,PADDLE_THICKNESS,PADDLE_HEIGHT,'white')
+    colorRect(1,paddle1Y,PADDLE_THICKNESS,PADDLE_HEIGHT,'white');
 
     // draw the computer's paddle
-    colorRect(canvas.width - (PADDLE_THICKNESS + 1) ,paddle2Y,PADDLE_THICKNESS,PADDLE_HEIGHT,'white')
+    colorRect(canvas.width - (PADDLE_THICKNESS + 1) ,paddle2Y,PADDLE_THICKNESS,PADDLE_HEIGHT,'white');
 
     // draw the ball
     colorBall(ballX, ballY, ballRadius,'yellow')
+
+    // show the score
+    canvasContext.font="30px Verdana";
+    canvasContext.fillText(playerScore, 50, 100);
+    canvasContext.fillText(computerScore, canvas.width-50, 100);
 
   }
 
