@@ -68,8 +68,15 @@
   }
 
   function drawEverything() {
-    //draw the  background
+    // draw the  background
     colorRect(0,0,canvas.width,canvas.height,'black');
+
+    // draw the net
+    for (var i=0; i<25; i++){
+      colorRect(canvas.width/2,i*25,2,20,'white');
+    }
+
+
 
     // draw the left paddle
     colorRect(1,paddle1Y,PADDLE_THICKNESS,PADDLE_HEIGHT,'white');
